@@ -1,0 +1,19 @@
+:root {
+  --btn-bg-normal: rgb(46, 27, 103);
+  --btn-bg-hover: rgb(180, 86, 222);
+  --high-score-bg: rgb(211, 205, 228);
+  --view-high-score-link: rgb(178, 75, 222);
+}
+
+/* remove default margins from every elememt */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* styles for all content in the body */
+body {
+  color: var(--big-stone);
+  font-family: Helvetia, Arial, sans-serif;
+}

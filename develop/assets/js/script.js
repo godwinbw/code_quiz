@@ -1,5 +1,6 @@
 /// we want 12 questions, for a 2 minute (120 second quiz)
 /// 10 seconds per question before one runs out of time
+/// questions can have a max of 4 multiple choice answers
 
 const questions = [
   // question #1

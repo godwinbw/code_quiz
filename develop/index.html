@@ -5,22 +5,115 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Code Quiz</title>
+    <link rel="stylesheet" href="./assets/css/style.css" />
   </head>
   <body>
+
+    <!-- Header section shows the link to high scores and the timer -->
     <header class="quiz-header">
-      <h1>Quiz Header</h1>
+      <div class="view-high-scores">
+          <h4>
+            <href>View high scores</href>
+          </h4>
+
+     </div>
+     <div class="quiz-header-timer">
+         <h4>Time:</h4>
+         <h4 class="quiz-header-time-remaining" id="time-remaining">
+             0
+         </h4>
+     </div>
     </header>
+
+    <!-- Quiz Ready section shows the instructions and the start button -->
     <section class="quiz-ready">
-      <h1>Quiz Ready</h1>
+      <div class="quiz-ready-title">
+        <h1>Coding Quiz Challenge</h1>
+      </div>
+      <div class="quiz-ready-detail">
+        <p>
+          Try to answer the following code-related questions within the time
+          limit.
+        </p>
+        <p>
+          Keep in mind that incorrect answers will penalize your score/time by
+          ten seconds!
+        </p>
+    </div>
+      <div class-"quiz-ready-start">
+          <button id="start-quiz">Start Quiz</button>
+      </div>
     </section>
+
+    <!-- Quiz in Progress section displays the questions -->
     <section class="quiz-in-progress">
-      <h1>Quiz in Progress</h1>
+        <div class="quiz-question">
+            <h2>Quiz Question Text</h2>
+        </div>
+        <div class="question-answers">
+            <ul class="question-answer-list">
+                <li>
+                    <button class="question-answer-btn" id="0">
+                        Answer 1
+                    </button>
+                </li>
+                <li>
+                    <button class="question-answer-btn" id="1">
+                        Answer 2
+                    </button>
+                </li>
+                <li>
+                    <button class="question-answer-btn" id="2">
+                        Answer 3
+                    </button>
+                </li>
+                <li>
+                    <button class="question-answer-btn" id="3">
+                        Answer 4
+                    </button>
+                </li>
+            </ul>
+        </div>
+        <div class="question-result" id="question-result">
+            <h3>Wrong!</h3>
+        </div>
     </section>
+
+    <!-- Quiz Done section shows the user score -->
     <section class="quiz-done">
-      <h1>Quiz Done</h1>
+      <div class="quiz-done-title">
+          <h2>All done!</h2>
+        </div>
+        <div class="quiz-done-final-score">
+            <p id="final-score">Your final score is 22</p>
+        </div>
+        <div class="quiz-done-high-score-submission">
+            <form class="high-score-form">
+                <p>Enter Initals:</p>
+                <input type="text" name="high-score-initials" placeholder="AB" />
+                <button class="high-score-submit-btn" id="high-score-submit" type="submit">Submit</button>
+            </form>
+        </div>
     </section>
+
+    <!-- High Score Detail section shows the high score list-->
     <section class="high-score-detail">
-      <h1>High Score Detail</h1>
+        <div class="high-score-detail-title">
+            <h1>High Score Detail</h1>
+        </div>
+
+        <div class="high-scores">
+            <ul class="high-score-list">
+                <!-- this list will be populated dyamically as high scores are added to local storage -->
+            </ul>
+        </div>
+        <div class="high-score-actions">
+            <button class="high-score-detail-btn" id="go-back">Go back</button>
+            <button class="high-score-detail-btn" id="clear-high-scores">Clear high scores</button>
+        </ul>
     </section>
+
+    <script src="./assets/js/script.js"></script>
+
   </body>
 </html>
