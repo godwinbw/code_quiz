@@ -17,3 +17,38 @@ body {
   color: var(--big-stone);
   font-family: Helvetia, Arial, sans-serif;
 }
+
+/* HEADER section START */
+.quiz-header {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+.quiz-header-view-high-scores {
+  order: 0;
+  flex: 0 1 auto;
+  align-self: auto;
+
+  margin-left: 15px;
+}
+
+.quiz-header-timer {
+  order: 0;
+  flex: 0 1 auto;
+  align-self: auto;
+
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+
+  margin-right: 15px;
+}
+
+.quiz-header-time-remaining {
+  padding-left: 10px;
+}

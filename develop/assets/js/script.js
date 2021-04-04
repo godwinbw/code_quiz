@@ -119,3 +119,98 @@ const questions = [
     ],
   },
 ];
+
+var gameState = {
+  // this controls which HTML sections will be visible to the user
+  display: {
+    displayQuizHeaderEl: true,
+    displayQuizReadyEl: true,
+    displayQuizInProgressEl: true,
+    displayQuizDoneEl: true,
+    displayHighScoreDetailEl: true,
+  },
+
+  pageElements: {
+    quizHeaderEl: document.getElementById("quiz-header-id"),
+    quizReadyEl: document.getElementById("quiz-ready-id"),
+    quizInProgressEl: document.getElementById("quiz-in-progress-id"),
+    quizDoneEl: document.getElementById("quiz-done-id"),
+    highScoreDetailEl: document.getElementById("high-score-detail-id"),
+  },
+
+  // will reset the game state to a READY TO PLAY state
+  reset: function () {
+    console.log("reset START...");
+
+    // reset which sections are shown
+    this.display.displayQuizHeaderEl = true;
+    this.display.displayQuizReadyEl = true;
+    this.display.displayQuizInProgressEl = false;
+    this.display.displayQuizDoneEl = false;
+    this.display.displayHighScoreDetailEl = false;
+
+    // reset timer
+
+    // refresh the display
+    gameState.refreshDisplay();
+
+    console.log("...reset END");
+  },
+
+  // refreshDisplay will update the HTML based on which sections are visible to the user
+  refreshDisplay: function () {
+    console.log("refreshDisplay START...");
+    // we could have set these as an array, and then looped through them
+    // but i set them up as separate if/else statements to make it easier to understand and troubleshoot
+
+    // set display attribute of quiz header section
+    if (this.display.displayQuizHeaderEl) {
+      console.log("   showing QUIZ HEADER");
+      this.pageElements.quizHeaderEl.style.display = "flex"; // restores element to a flex
+    } else {
+      console.log("   hiding QUIZ HEADER");
+      this.pageElements.quizHeaderEl.style.display = "none"; // hide, but lets element keep it's size
+    }
+
+    //set display status of quiz ready section
+    if (this.display.displayQuizReadyEl) {
+      console.log("   showing QUIZ READY");
+      this.pageElements.quizReadyEl.style.display = "flex"; // restores element to a flex
+    } else {
+      console.log("   hiding QUIZ READY");
+      this.pageElements.quizReadyEl.style.display = "none"; // hide, but lets element keep it's size
+    }
+
+    //set display status of quiz in progress section
+    if (this.display.displayQuizInProgressEl) {
+      console.log("   showing QUIZ IN PROGRESS");
+      this.pageElements.quizInProgressEl.style.display = "flex"; // restores element to a flex
+    } else {
+      console.log("   hiding QUIZ IN PROGRESS");
+      this.pageElements.quizInProgressEl.style.display = "none"; // hide, but lets element keep it's size
+    }
+
+    //set display status of quiz done section
+    if (this.display.displayQuizDoneEl) {
+      console.log("   showing QUIZ DONE");
+      this.pageElements.quizDoneEl.style.display = "flex"; // restores element to a flex
+    } else {
+      console.log("   hiding QUIZ DONE");
+      this.pageElements.quizDoneEl.style.display = "none"; // hide, but lets element keep it's size
+    }
+
+    //set display status of high score detail section
+    if (this.display.displayHighScoreDetailEl) {
+      console.log("   showing HIGH SCORE DETAIL");
+      this.pageElements.highScoreDetailEl.style.display = "flex"; // restores element to a flex
+    } else {
+      console.log("   hiding HIGH SCORE DETAIL");
+      this.pageElements.highScoreDetailEl.style.display = "none"; // hide, but lets element keep it's size
+    }
+
+    console.log("refreshDisplay END...");
+  },
+};
+
+// when page reloads, reset the gameState
+gameState.reset();
