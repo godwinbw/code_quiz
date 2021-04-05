@@ -184,3 +184,40 @@ body {
 
   margin-top: 10px;
 }
+
+/* QUIZ DONE section start */
+
+.quiz-done {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+
+  width: 100%;
+  align-items: center;
+}
+
+.quiz-done-title {
+  display: flex;
+  width: 75%;
+  align-items: flex-start;
+
+  margin-bottom: 10px;
+}
+
+.quiz-done-final-score {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: flex-start;
+  width: 75%;
+
+  margin-bottom: 10px;
+}
+
+.quiz-done-high-score-submission {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: flex-start;
+  width: 75%;
+}
