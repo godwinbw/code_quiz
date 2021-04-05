@@ -221,3 +221,24 @@ body {
   align-items: flex-start;
   width: 75%;
 }
+
+.high-score-form {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  align-items: center;
+}
+
+.high-score-form p {
+  padding-right: 10px;
+}
+.high-score-form input {
+  padding-right: 10px;
+  width: 40%;
+}
+
+.high-score-form button {
+  margin-left: 10px;
+}
+
+/* HIGH SCORE DETAIL section START */
