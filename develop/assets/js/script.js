@@ -142,10 +142,12 @@ var gameState = {
     highScoreDetailEl: document.getElementById("high-score-detail-id"),
     timeRemainingEl: document.getElementById("time-remaining"),
     viewHighScoreEl: document.getElementById("view-high-score-link"),
+    gameScoreEl: document.getElementById("final-score"),
   },
 
-  timeRemaining: 0,
-  gameInProgress: false,
+  timeRemaining: 0, // time remaining in seconds
+  gameInProgress: false, // true = game in progress, false = no game in progress
+  gameTimerId: null, // the ID of the game timer
 
   // will reset the game state to a READY TO PLAY state
   reset: function () {
@@ -232,12 +234,19 @@ var gameState = {
     this.pageElements.timeRemainingEl.innerHTML = this.timeRemaining;
   },
 
+  // set final score
+  setFinalScore: function () {
+    console.log("setting final score");
+    this.pageElements.gameScoreEl.innerHTML =
+      "Your final score is " + this.timeRemaining;
+  },
+
   // start the game
   start: function () {
     console.log("GAME STARTED!");
 
     //set timer for 120 seconds
-    this.timeRemaining = 120;
+    this.timeRemaining = 10;
     this.updateTimerDisplay();
 
     //set game in progress
@@ -249,6 +258,10 @@ var gameState = {
 
     //refresh the display
     this.refreshDisplay();
+
+    //start the timer
+    console.log("...starting the timer");
+    this.gameTimerId = window.setInterval(timerStep, 1000);
   },
 
   //view high scores
@@ -279,6 +292,38 @@ var gameState = {
     console.log("GO BACK!");
     gameState.reset();
   },
+};
+
+// timer function (count down 1 second at a time)
+// game timer
+var timerStep = function () {
+  console.log("...timer Tick, time remaining = " + gameState.timeRemaining);
+
+  if (gameState.timeRemaining > 0) {
+    // decrement the time remaining
+    gameState.timeRemaining = --gameState.timeRemaining;
+    // update the timer dispay
+    gameState.updateTimerDisplay();
+  } else {
+    //stop the timer
+    window.clearInterval(gameState.gameTimerId);
+
+    // out of time, game is over
+    gameState.gameInProgress = false;
+
+    // go to enter high score stage
+    gameState.display.displayQuizHeaderEl = true;
+    gameState.display.displayQuizReadyEl = false;
+    gameState.display.displayQuizInProgressEl = false;
+    gameState.display.displayQuizDoneEl = true;
+    gameState.display.displayHighScoreDetailEl = false;
+
+    //set the final score
+    gameState.setFinalScore();
+
+    //refresh the display
+    gameState.refreshDisplay();
+  }
 };
 
 // assign button click to START QUIZ button
