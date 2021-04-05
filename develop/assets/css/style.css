@@ -31,6 +31,7 @@ body {
   font-size: large;
   border-radius: 12px;
   position: relative;
+  height: 40px;
 }
 
 .btn:hover {
@@ -242,3 +243,56 @@ body {
 }
 
 /* HIGH SCORE DETAIL section START */
+.high-score-detail {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+
+  width: 100%;
+  align-items: center;
+}
+
+.high-score-detail-title {
+  width: 75%;
+  align-items: flex-start;
+  margin-bottom: 20px;
+}
+
+.high-scores-detail-title-h1 {
+  width: 100%;
+}
+
+.high-scores {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+
+  width: 75%;
+  align-items: center;
+}
+
+.high-scores ul {
+  width: 100%;
+  list-style-type: none;
+}
+
+.high-scores ul li {
+  width: 100%;
+  padding-left: 10px;
+  padding-bottom: 10px;
+  padding-top: 10px;
+
+  margin-bottom: 20px;
+  background-color: var(--high-score-bg);
+}
+
+.high-score-actions {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 75%;
+}
+
+.high-score-actions button {
+  margin-right: 15px;
+}

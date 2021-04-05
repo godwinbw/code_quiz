@@ -146,8 +146,8 @@ var gameState = {
     this.display.displayQuizHeaderEl = true;
     this.display.displayQuizReadyEl = true;
     this.display.displayQuizInProgressEl = false;
-    this.display.displayQuizDoneEl = true;
-    this.display.displayHighScoreDetailEl = false;
+    this.display.displayQuizDoneEl = false;
+    this.display.displayHighScoreDetailEl = true;
 
     // reset timer
 
