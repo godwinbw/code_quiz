@@ -67,6 +67,11 @@ body {
   color: var(--view-high-score-link);
 }
 
+.quiz-header-view-high-scores h4:hover {
+  background-color: var(--high-score-bg);
+  cursor: pointer;
+}
+
 .quiz-header-timer {
   order: 0;
   flex: 0 1 auto;
@@ -250,6 +255,8 @@ body {
 
   width: 100%;
   align-items: center;
+
+  margin-top: 100px;
 }
 
 .high-score-detail-title {

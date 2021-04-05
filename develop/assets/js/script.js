@@ -120,6 +120,10 @@ const questions = [
   },
 ];
 
+// gameState variable controls the progress of the game
+// reset() -> resets the game, ready to begin a new game
+// start() -> starts the game
+
 var gameState = {
   // this controls which HTML sections will be visible to the user
   display: {
@@ -136,7 +140,12 @@ var gameState = {
     quizInProgressEl: document.getElementById("quiz-in-progress-id"),
     quizDoneEl: document.getElementById("quiz-done-id"),
     highScoreDetailEl: document.getElementById("high-score-detail-id"),
+    timeRemainingEl: document.getElementById("time-remaining"),
+    viewHighScoreEl: document.getElementById("view-high-score-link"),
   },
+
+  timeRemaining: 0,
+  gameInProgress: false,
 
   // will reset the game state to a READY TO PLAY state
   reset: function () {
@@ -147,12 +156,19 @@ var gameState = {
     this.display.displayQuizReadyEl = true;
     this.display.displayQuizInProgressEl = false;
     this.display.displayQuizDoneEl = false;
-    this.display.displayHighScoreDetailEl = true;
+    this.display.displayHighScoreDetailEl = false;
 
     // reset timer
+    this.timeRemaining = 0;
+
+    //reset the game in progress
+    this.gameInProgress = false;
 
     // refresh the display
     gameState.refreshDisplay();
+
+    // update the timer display
+    gameState.updateTimerDisplay();
 
     console.log("...reset END");
   },
@@ -210,7 +226,86 @@ var gameState = {
 
     console.log("refreshDisplay END...");
   },
+
+  // updates the timer
+  updateTimerDisplay: function () {
+    this.pageElements.timeRemainingEl.innerHTML = this.timeRemaining;
+  },
+
+  // start the game
+  start: function () {
+    console.log("GAME STARTED!");
+
+    //set timer for 120 seconds
+    this.timeRemaining = 120;
+    this.updateTimerDisplay();
+
+    //set game in progress
+    this.gameInProgress = true;
+
+    //hide quiz ready, and show quiz in progress
+    this.display.displayQuizReadyEl = false;
+    this.display.displayQuizInProgressEl = true;
+
+    //refresh the display
+    this.refreshDisplay();
+  },
+
+  //view high scores
+  viewHighScore: function () {
+    console.log("VIEW HIGH SCORE!");
+    if (this.gameInProgress) {
+      // show an alert that you can't see high scores while a game is in progress
+      alert("A game is in progress! Worry about high scores later!");
+    } else {
+      // game not in progress, ok to show high scores
+      this.display.displayQuizHeaderEl = false;
+      this.display.displayQuizReadyEl = false;
+      this.display.displayQuizInProgressEl = false;
+      this.display.displayQuizDoneEl = false;
+      this.display.displayHighScoreDetailEl = true;
+
+      this.refreshDisplay();
+    }
+  },
+
+  //clear high scores
+  clearHighScore: function () {
+    console.log("CLEAR HIGH SCORE");
+  },
+
+  // high scores go back
+  goBack: function () {
+    console.log("GO BACK!");
+    gameState.reset();
+  },
 };
+
+// assign button click to START QUIZ button
+document
+  .getElementById("start-quiz-btn")
+  .addEventListener("click", function () {
+    gameState.start();
+  });
+
+// assign click to VIEW HIGH SCORE
+document
+  .getElementById("view-high-scores-link")
+  .addEventListener("click", function () {
+    gameState.viewHighScore();
+  });
+
+// assign button click to GO BACK button
+document.getElementById("go-back").addEventListener("click", function () {
+  gameState.goBack();
+});
+
+// assign button click to CLEAR HIGH SCORE button
+document
+  .getElementById("clear-high-scores")
+  .addEventListener("click", function () {
+    gameState.clearHighScore();
+  });
 
 // when page reloads, reset the gameState
 gameState.reset();
