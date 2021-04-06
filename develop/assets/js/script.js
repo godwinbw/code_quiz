@@ -370,6 +370,10 @@ var gameState = {
       //decrease the timeRemaining by 10 seconds
       console.log("   ...decreasing timer by 10 seconds");
       this.timeRemaining = this.timeRemaining - 10;
+      if (this.timeRemaining < 0) {
+        this.timeRemaining = 0;
+      }
+      this.updateTimerDisplay();
     }
   },
 
