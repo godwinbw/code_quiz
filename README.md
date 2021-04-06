@@ -43,10 +43,8 @@
 
 ### **Challenge Four - live link**
 
-<https://godwinbw.github.io/code_quizdevelop/>
+<https://godwinbw.github.io/code_quiz/develop/>
 
 ### **Challenge Four - screenshot**
 
-<!--
-<img src="./challenge_2_screenshot.png" style="width: 50%; height=auto;">
--->
+<img src="./challenge_4_screenshot.png" style="width: 50%; height=auto;">
