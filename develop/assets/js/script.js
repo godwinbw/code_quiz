@@ -331,10 +331,39 @@ var gameState = {
       this.pageElements.quizAnswers[i].style.display = "flex";
     }
   },
-};
 
-updateAnswerResult = function (correct) {
-  console.log("updateAnswer: correct -> " + correct);
+  updateAnswerResult: function (correct) {
+    console.log("updateAnswer: correct -> " + correct);
+
+    // do something with wrong indicator, will do this later
+
+    // increment the guestion index
+    this.questionIndex = ++this.questionIndex;
+    if (this.questionIndex >= questions.lenght) {
+      // we are out of questions, stop the timer and go to score
+      //stop the timer
+      window.clearInterval(gameState.gameTimerId);
+
+      // game is over
+      this.gameInProgress = false;
+
+      // go to enter high score stage
+      this.display.displayQuizHeaderEl = true;
+      this.display.displayQuizReadyEl = false;
+      this.display.displayQuizInProgressEl = false;
+      this.display.displayQuizDoneEl = true;
+      this.display.displayHighScoreDetailEl = false;
+
+      //set the final score
+      this.setFinalScore();
+
+      //refresh the display
+      this.refreshDisplay();
+    } else {
+      // the quiz can keep going
+      this.updateQuestionAndAnswers();
+    }
+  },
 };
 
 // timer function (count down 1 second at a time)
@@ -376,13 +405,15 @@ document
     gameState.start();
   });
 
-// assign button click for question answers
+// assign button click for QUESTION ANSWERS
 for (i = 0; i < 4; i++) {
-  //assign to this button
+  //there are four buttons
   this.gameState.pageElements.quizAnswers[i].addEventListener(
     "click",
     function () {
       // look at attribute correct on the element that was clicked
+      //console.log(this);
+      gameState.updateAnswerResult(this.getAttribute("correct"));
     }
   );
 }
