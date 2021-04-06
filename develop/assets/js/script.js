@@ -45,8 +45,8 @@ const questions = [
   {
     question: "How do you create a function in JavaScript?",
     answers: [
-      { text: "function myFunction()", correct: true },
-      { text: "function = myFunction()", correct: false },
+      { text: "function = var myFunction()", correct: false },
+      { text: "var function = myFunction()", correct: true },
       { text: "make.function.myFunction()", correct: false },
       { text: "function:myFunction()", correct: false },
     ],
@@ -346,7 +346,7 @@ var gameState = {
     // do something with wrong indicator, will do this later
     if (answerResult === "true") {
       // we can move to the next question
-      console.log("   ...moving to next question");
+      console.log("   ...CORRECT! moving to next question");
 
       // increment the guestion index
       this.questionIndex = ++this.questionIndex;
@@ -359,7 +359,7 @@ var gameState = {
       }
     } else {
       // we have to stay on this question until we get the right answer
-      console.log("   ...staying on this question");
+      console.log("   ...WRONG ANSWER, staying on this question");
 
       // hide this element (don't want to answer this question again)
       elementClicked.style.display = "none";
@@ -368,6 +368,7 @@ var gameState = {
       this.pageElements.questionResultEl.style.display = "flex";
 
       //decrease the timeRemaining by 10 seconds
+      console.log("   ...decreasing timer by 10 seconds");
       this.timeRemaining = this.timeRemaining - 10;
     }
   },
