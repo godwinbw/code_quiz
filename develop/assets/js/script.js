@@ -143,11 +143,19 @@ var gameState = {
     timeRemainingEl: document.getElementById("time-remaining"),
     viewHighScoreEl: document.getElementById("view-high-score-link"),
     gameScoreEl: document.getElementById("final-score"),
+    quizQuestion: document.getElementById("quiz-question"),
+    quizAnswers: [
+      document.getElementById("answer-btn-0"),
+      document.getElementById("answer-btn-1"),
+      document.getElementById("answer-btn-2"),
+      document.getElementById("answer-btn-3"),
+    ],
   },
 
   timeRemaining: 0, // time remaining in seconds
   gameInProgress: false, // true = game in progress, false = no game in progress
   gameTimerId: null, // the ID of the game timer
+  questionIndex: 0, // index of the current question
 
   // will reset the game state to a READY TO PLAY state
   reset: function () {
@@ -165,6 +173,9 @@ var gameState = {
 
     //reset the game in progress
     this.gameInProgress = false;
+
+    //reset the current question
+    this.questionIndex = 0;
 
     // refresh the display
     gameState.refreshDisplay();
@@ -252,6 +263,9 @@ var gameState = {
     //set game in progress
     this.gameInProgress = true;
 
+    //update the first question
+    this.updateQuestionAndAnswers();
+
     //hide quiz ready, and show quiz in progress
     this.display.displayQuizReadyEl = false;
     this.display.displayQuizInProgressEl = true;
@@ -292,6 +306,35 @@ var gameState = {
     console.log("GO BACK!");
     gameState.reset();
   },
+
+  // display question
+  updateQuestionAndAnswers: function () {
+    console.log("...displaying question #" + this.questionIndex);
+    //set page elements for this question
+    this.pageElements.quizQuestion.innerHTML =
+      questions[this.questionIndex].question;
+
+    //loop through all the questions, and set them as hidden (not rendered on page)
+    for (var i = 0; i < 4; i++) {
+      this.pageElements.quizAnswers[i].style.display = "none";
+    }
+    //loop through the elements, and set the ones that have answers and make them visible again
+    for (var i = 0; i < questions[this.questionIndex].answers.length; i++) {
+      this.pageElements.quizAnswers[i].innerHTML =
+        questions[this.questionIndex].answers[i].text;
+      // we set whether the answer is correct or not to an attribute on this element, which we will retrieve for the button clicked
+      // we can immediately know whether the answer is right or not
+      this.pageElements.quizAnswers[i].setAttribute(
+        "correct",
+        questions[this.questionIndex].answers[i].correct
+      );
+      this.pageElements.quizAnswers[i].style.display = "flex";
+    }
+  },
+};
+
+updateAnswerResult = function (correct) {
+  console.log("updateAnswer: correct -> " + correct);
 };
 
 // timer function (count down 1 second at a time)
@@ -332,6 +375,17 @@ document
   .addEventListener("click", function () {
     gameState.start();
   });
+
+// assign button click for question answers
+for (i = 0; i < 4; i++) {
+  //assign to this button
+  this.gameState.pageElements.quizAnswers[i].addEventListener(
+    "click",
+    function () {
+      // look at attribute correct on the element that was clicked
+    }
+  );
+}
 
 // assign click to VIEW HIGH SCORE
 document
