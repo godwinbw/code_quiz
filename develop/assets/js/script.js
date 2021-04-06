@@ -93,9 +93,13 @@ const questions = [
   },
   // question #10
   {
-    title: "Arrays in JavaScript can be used to store ______.",
-    choices: ["strings", "numbers", "objects", "All of the Above"],
-    answer: "All of the Above",
+    question: "Arrays in JavaScript can be used to store ______.",
+    answers: [
+      { text: "strings", correct: false },
+      { text: "numbers", correct: false },
+      { text: "objects", correct: false },
+      { text: "All of the Above", correct: true },
+    ],
   },
   // question #11
   {
@@ -121,8 +125,6 @@ const questions = [
 ];
 
 // gameState variable controls the progress of the game
-// reset() -> resets the game, ready to begin a new game
-// start() -> starts the game
 
 var gameState = {
   // this controls which HTML sections will be visible to the user
@@ -143,13 +145,14 @@ var gameState = {
     timeRemainingEl: document.getElementById("time-remaining"),
     viewHighScoreEl: document.getElementById("view-high-score-link"),
     gameScoreEl: document.getElementById("final-score"),
-    quizQuestion: document.getElementById("quiz-question"),
-    quizAnswers: [
+    quizQuestionEl: document.getElementById("quiz-question"),
+    quizAnswersEl: [
       document.getElementById("answer-btn-0"),
       document.getElementById("answer-btn-1"),
       document.getElementById("answer-btn-2"),
       document.getElementById("answer-btn-3"),
     ],
+    questionResultEl: document.getElementById("question-result"),
   },
 
   timeRemaining: 0, // time remaining in seconds
@@ -257,7 +260,7 @@ var gameState = {
     console.log("GAME STARTED!");
 
     //set timer for 120 seconds
-    this.timeRemaining = 10;
+    this.timeRemaining = 120;
     this.updateTimerDisplay();
 
     //set game in progress
@@ -311,58 +314,84 @@ var gameState = {
   updateQuestionAndAnswers: function () {
     console.log("...displaying question #" + this.questionIndex);
     //set page elements for this question
-    this.pageElements.quizQuestion.innerHTML =
+    this.pageElements.quizQuestionEl.innerHTML =
       questions[this.questionIndex].question;
 
     //loop through all the questions, and set them as hidden (not rendered on page)
     for (var i = 0; i < 4; i++) {
-      this.pageElements.quizAnswers[i].style.display = "none";
+      this.pageElements.quizAnswersEl[i].style.display = "none";
     }
     //loop through the elements, and set the ones that have answers and make them visible again
     for (var i = 0; i < questions[this.questionIndex].answers.length; i++) {
-      this.pageElements.quizAnswers[i].innerHTML =
+      this.pageElements.quizAnswersEl[i].innerHTML =
         questions[this.questionIndex].answers[i].text;
       // we set whether the answer is correct or not to an attribute on this element, which we will retrieve for the button clicked
       // we can immediately know whether the answer is right or not
-      this.pageElements.quizAnswers[i].setAttribute(
+      this.pageElements.quizAnswersEl[i].setAttribute(
         "correct",
         questions[this.questionIndex].answers[i].correct
       );
-      this.pageElements.quizAnswers[i].style.display = "flex";
+      this.pageElements.quizAnswersEl[i].style.display = "flex";
+    }
+
+    // hide the wrong indicator
+    this.pageElements.questionResultEl.style.display = "none";
+  },
+
+  updateAnswerResult: function (elementClicked, answerResult) {
+    console.log(
+      "updateAnswer: elementClicked -> " + elementClicked.getAttribute("id")
+    );
+
+    // do something with wrong indicator, will do this later
+    if (answerResult === "true") {
+      // we can move to the next question
+      console.log("   ...moving to next question");
+
+      // increment the guestion index
+      this.questionIndex = ++this.questionIndex;
+      if (this.questionIndex >= questions.length) {
+        // we are out of questions, stop the timer and go to score
+        this.gameOver();
+      } else {
+        // the quiz can keep going
+        this.updateQuestionAndAnswers();
+      }
+    } else {
+      // we have to stay on this question until we get the right answer
+      console.log("   ...staying on this question");
+
+      // hide this element (don't want to answer this question again)
+      elementClicked.style.display = "none";
+
+      //show wrong answer indicator
+      this.pageElements.questionResultEl.style.display = "flex";
+
+      //decrease the timeRemaining by 10 seconds
+      this.timeRemaining = this.timeRemaining - 10;
     }
   },
 
-  updateAnswerResult: function (correct) {
-    console.log("updateAnswer: correct -> " + correct);
+  gameOver: function () {
+    console.log("GAME OVER!");
+    //stop the timer
+    window.clearInterval(gameState.gameTimerId);
 
-    // do something with wrong indicator, will do this later
+    // game is over
+    this.gameInProgress = false;
 
-    // increment the guestion index
-    this.questionIndex = ++this.questionIndex;
-    if (this.questionIndex >= questions.lenght) {
-      // we are out of questions, stop the timer and go to score
-      //stop the timer
-      window.clearInterval(gameState.gameTimerId);
+    // go to enter high score stage
+    this.display.displayQuizHeaderEl = true;
+    this.display.displayQuizReadyEl = false;
+    this.display.displayQuizInProgressEl = false;
+    this.display.displayQuizDoneEl = true;
+    this.display.displayHighScoreDetailEl = false;
 
-      // game is over
-      this.gameInProgress = false;
+    //set the final score
+    this.setFinalScore();
 
-      // go to enter high score stage
-      this.display.displayQuizHeaderEl = true;
-      this.display.displayQuizReadyEl = false;
-      this.display.displayQuizInProgressEl = false;
-      this.display.displayQuizDoneEl = true;
-      this.display.displayHighScoreDetailEl = false;
-
-      //set the final score
-      this.setFinalScore();
-
-      //refresh the display
-      this.refreshDisplay();
-    } else {
-      // the quiz can keep going
-      this.updateQuestionAndAnswers();
-    }
+    //refresh the display
+    this.refreshDisplay();
   },
 };
 
@@ -377,24 +406,8 @@ var timerStep = function () {
     // update the timer dispay
     gameState.updateTimerDisplay();
   } else {
-    //stop the timer
-    window.clearInterval(gameState.gameTimerId);
-
-    // out of time, game is over
-    gameState.gameInProgress = false;
-
-    // go to enter high score stage
-    gameState.display.displayQuizHeaderEl = true;
-    gameState.display.displayQuizReadyEl = false;
-    gameState.display.displayQuizInProgressEl = false;
-    gameState.display.displayQuizDoneEl = true;
-    gameState.display.displayHighScoreDetailEl = false;
-
-    //set the final score
-    gameState.setFinalScore();
-
-    //refresh the display
-    gameState.refreshDisplay();
+    //game over
+    gameState.gameOver();
   }
 };
 
@@ -408,12 +421,14 @@ document
 // assign button click for QUESTION ANSWERS
 for (i = 0; i < 4; i++) {
   //there are four buttons
-  this.gameState.pageElements.quizAnswers[i].addEventListener(
+  this.gameState.pageElements.quizAnswersEl[i].addEventListener(
     "click",
     function () {
       // look at attribute correct on the element that was clicked
       //console.log(this);
-      gameState.updateAnswerResult(this.getAttribute("correct"));
+
+      // pass this on to gamestate
+      gameState.updateAnswerResult(this, this.getAttribute("correct"));
     }
   );
 }
