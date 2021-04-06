@@ -153,6 +153,8 @@ var gameState = {
       document.getElementById("answer-btn-3"),
     ],
     questionResultEl: document.getElementById("question-result"),
+    highScoreInitialsEl: document.getElementById("high-score-initials"),
+    highScoreListEl: document.getElementById("high-score-list"),
   },
 
   timeRemaining: 0, // time remaining in seconds
@@ -180,11 +182,14 @@ var gameState = {
     //reset the current question
     this.questionIndex = 0;
 
+    //load all high scores
+    this.loadAllHighScores();
+
     // refresh the display
-    gameState.refreshDisplay();
+    this.refreshDisplay();
 
     // update the timer display
-    gameState.updateTimerDisplay();
+    this.updateTimerDisplay();
 
     console.log("...reset END");
   },
@@ -299,11 +304,6 @@ var gameState = {
     }
   },
 
-  //clear high scores
-  clearHighScore: function () {
-    console.log("CLEAR HIGH SCORE");
-  },
-
   // high scores go back
   goBack: function () {
     console.log("GO BACK!");
@@ -398,6 +398,100 @@ var gameState = {
     //refresh the display
     this.refreshDisplay();
   },
+
+  //clear high scores
+  clearHighScore: function () {
+    console.log("CLEAR HIGH SCORE");
+
+    // erase all high scores from local storage
+    window.localStorage.clear();
+
+    // reload all high scores
+    this.loadAllHighScores();
+  },
+
+  saveHighScore: function (initials, score) {
+    console.log(
+      "saving high score: initials -> " + initials + " score: " + score
+    );
+
+    //put this high score in object form, for local storage
+
+    var highScoreText = initials + " - " + score;
+    var highScoreObject = {
+      highScoreLabel: highScoreText,
+      highScoreValue: score,
+    };
+
+    // read all high scores from local storage
+    var retrievedScores = JSON.parse(window.localStorage.getItem("highScores"));
+
+    // if no high scores exist in local storage, we need to make an empty array
+    if (!retrievedScores) {
+      retrievedScores = [];
+    }
+
+    // add this high score to the array
+    retrievedScores.push(highScoreObject);
+
+    // erase all high scores from local storage
+    window.localStorage.clear();
+
+    // now save all the high scores back to local storage
+    window.localStorage.setItem("highScores", JSON.stringify(retrievedScores));
+
+    // load all high score
+    this.loadAllHighScores();
+  },
+
+  loadAllHighScores: function () {
+    console.log("loading high score");
+
+    // remove all existing high score elements
+    while (this.pageElements.highScoreListEl.firstChild) {
+      this.pageElements.highScoreListEl.removeChild(
+        this.pageElements.highScoreListEl.firstChild
+      );
+    }
+
+    // read high scores from local storage
+    var retrievedScores = JSON.parse(window.localStorage.getItem("highScores"));
+
+    // if we have any high scores, need to sort them with highest on top
+    // then add them to the high score list element
+
+    if (retrievedScores) {
+      retrievedScores.sort(function (a, b) {
+        return b.highScoreValue - a.highScoreValue;
+      });
+
+      // rebuild all the elements
+      for (i = 0; i < retrievedScores.length; i++) {
+        // add an li to high score list element for each high score
+        var li = document.createElement("li");
+        li.innerHTML = i + 1 + ". " + retrievedScores[i].highScoreLabel;
+        this.pageElements.highScoreListEl.appendChild(li);
+      }
+    }
+  },
+
+  highScoreSubmit: function () {
+    console.log("HIGH SCORE SUBMIT!");
+    // if there is no initials entered in the high score input, then alert and do nothing
+    var submittedInitials = this.pageElements.highScoreInitialsEl.value;
+    if (submittedInitials === "" || submittedInitials === null) {
+      alert("Please enter your initials and try again!");
+    } else {
+      //// we want to submit these as a high score
+      console.log("submitting intials -> " + submittedInitials);
+
+      // now save these initials
+      this.saveHighScore(submittedInitials, this.timeRemaining);
+
+      // go to high score screen
+      this.viewHighScore();
+    }
+  },
 };
 
 // timer function (count down 1 second at a time)
@@ -443,6 +537,13 @@ document
   .getElementById("view-high-scores-link")
   .addEventListener("click", function () {
     gameState.viewHighScore();
+  });
+
+// assign button click to SUBMIT high score
+document
+  .getElementById("high-score-submit")
+  .addEventListener("click", function () {
+    gameState.highScoreSubmit();
   });
 
 // assign button click to GO BACK button

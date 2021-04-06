@@ -88,11 +88,11 @@
             <p id="final-score">Your final score is 22</p>
         </div>
         <div class="quiz-done-high-score-submission">
-            <form class="high-score-form">
+            <div class="high-score-form">
                 <p>Enter Initals:</p>
                 <input type="text" id="high-score-initials" placeholder="AB" />
-                <button class="btn" id="high-score-submit" type="submit">Submit</button>
-            </form>
+                <button class="btn" id="high-score-submit" >Submit</button>
+            </div>
         </div>
     </section>
 
@@ -103,7 +103,7 @@
         </div>
 
         <div class="high-scores">
-            <ul class="high-score-list">
+            <ul class="high-score-list" id="high-score-list">
                 <!-- this list will be populated dyamically as high scores are added to local storage -->
                 <li>This is sample high score AB - 22</li>
                 <li>This is another sample high score BC - 26 </li>
